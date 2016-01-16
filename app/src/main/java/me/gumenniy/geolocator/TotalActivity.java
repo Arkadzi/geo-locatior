@@ -67,10 +67,10 @@ public class TotalActivity extends AppCompatActivity implements MyAdapter.ItemCl
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+
         mData = new ArrayList<>();
         mAdapter = new MyAdapter(mData);
         mAdapter.setListener(this);
-
         mRecyclerView.setAdapter(mAdapter);
 
         updateView();
