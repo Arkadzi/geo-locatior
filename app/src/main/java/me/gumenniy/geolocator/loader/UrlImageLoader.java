@@ -7,7 +7,7 @@ import java.net.URL;
 import me.gumenniy.geolocator.loader.AbstractImageLoaderTask;
 
 /**
- * Created by Arkadiy on 15.01.2016.
+ * Image loader by url (from internet)
  */
 public class UrlImageLoader extends AbstractImageLoaderTask {
     @Override

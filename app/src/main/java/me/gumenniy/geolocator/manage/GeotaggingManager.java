@@ -10,11 +10,16 @@ import android.provider.MediaStore;
 import java.io.IOException;
 
 /**
- * Created by Arkadiy on 15.01.2016.
+ * Unused class, which could be used for applying geo tags to files
  */
 public class GeotaggingManager {
 
 
+    /**
+     * converts location to exif tags
+     * @param flNm absolute path to image file
+     * @param loc location
+     */
     public void loc2Exif(String flNm, Location loc) {
         try {
             ExifInterface ef = new ExifInterface(flNm);
@@ -42,6 +47,11 @@ public class GeotaggingManager {
         return sOut;
     }
 
+    /**
+     * converts exif tags to location
+     * @param flNm absolute path to image file
+     * @return location
+     */
     public Location exif2Loc(String flNm) {
         String sLat = "", sLatR = "", sLon = "", sLonR = "";
         try {

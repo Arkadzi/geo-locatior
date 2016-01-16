@@ -9,13 +9,23 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Created by Arkadiy on 15.01.2016.
+ * Abstraction of asynchronous image
  */
 public abstract class AbstractImageLoaderTask extends AsyncTask<String, Void, Bitmap> {
+    /**
+     * listener which launches loader and receives result
+     */
     ImageLoaderListener listener;
+
+    /**
+     * loaded bitmap
+     */
     private Bitmap mBitmap;
+
+    /**
+     * flag returns true if bitmap was loaded successfully
+     */
     private boolean isLoaded;
-    private int mode;
 
     protected Bitmap doInBackground(String... urls) {
         String urldisplay = urls[0];
@@ -47,8 +57,6 @@ public abstract class AbstractImageLoaderTask extends AsyncTask<String, Void, Bi
                     bitmap = BitmapFactory.decodeStream(in);
                 }
                 in.close();
-                Log.e("AbstractImageLoaderTask", "bitmap size - width: " + bitmap.getWidth() + ", height: " +
-                        bitmap.getHeight());
             }
         } catch (Exception e) {
             Log.e("Error", e.getMessage());
@@ -57,7 +65,7 @@ public abstract class AbstractImageLoaderTask extends AsyncTask<String, Void, Bi
         return bitmap;
     }
 
-    protected abstract InputStream getInputStream(String urldisplay) throws IOException;
+    protected abstract InputStream getInputStream(String urlString) throws IOException;
 
     protected void onPostExecute(Bitmap result) {
         Log.e("AbstractImageLoaderTask", "onPostExecute() " + isCancelled());
@@ -80,6 +88,9 @@ public abstract class AbstractImageLoaderTask extends AsyncTask<String, Void, Bi
         return mBitmap;
     }
 
+    /**
+     * interface for launcher class
+     */
     public interface ImageLoaderListener {
         void onLoad(Bitmap bitmap);
     }

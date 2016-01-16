@@ -9,7 +9,7 @@ import java.io.InputStream;
 import me.gumenniy.geolocator.loader.AbstractImageLoaderTask;
 
 /**
- * Created by Arkadiy on 15.01.2016.
+ * Image loader by Uri (local storage)
  */
 public class UriImageLoader extends AbstractImageLoaderTask {
     private final ContentResolver contentResolver;

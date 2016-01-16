@@ -26,9 +26,22 @@ import me.gumenniy.geolocator.db.SQLiteHelper;
  */
 public class Utils {
 
+    /**
+     * size for converted thumbnail
+     */
     private static ImageSize imageSize;
+
+    /**
+     * UIL instance
+     */
     private static ImageLoader imageLoader;
 
+    /**
+     * obtains MediaStore image id by its URI
+     * @param context used for ContentResolver instance
+     * @param contentUri uri of appropriate image
+     * @return MediaStore image id
+     */
     public static long getImageIdFromURI(Context context, Uri contentUri) {
         long imageId = 0;
         String[] proj = {MediaStore.Images.Media._ID};
@@ -43,6 +56,13 @@ public class Utils {
         return imageId;
     }
 
+    /**
+     * caches bitmap into storage and adds record to local database
+     * @param context used for getting ContentResolver instance
+     * @param bitmap caching bitmap
+     * @param location applying location
+     * @return true if success, false otherwise
+     */
     public static boolean cacheBitmap(final Context context, Bitmap bitmap, final Location location) {
         final String filePath = saveBitmap(context, bitmap);
         ContentValues cv = new ContentValues();
@@ -58,11 +78,15 @@ public class Utils {
         }
     }
 
+    /**
+     * saves bitmap into cache folder
+      * @param context used for defining path to cache folder
+     * @param bitmap bitmap for store
+     * @return absolute path to saved bitmap
+     */
     public static String saveBitmap(Context context, Bitmap bitmap) {
-        String root = Environment.getExternalStorageDirectory().toString();
         File myDir = getDiskCacheDir(context, "GeoLocatorCache");
         myDir.mkdirs();
-        Random generator = new Random();
         Calendar c = Calendar.getInstance();
         long millis = c.getTimeInMillis();
         String fname = "Image-" + millis + ".jpg";
@@ -79,9 +103,13 @@ public class Utils {
         return file.getAbsolutePath();
     }
 
+    /**
+     * defines file which represents cache directory
+     * @param context used for defining path to cache directory
+     * @param uniqueName name of cache directory
+     * @return file representation of cache directory
+     */
     public static File getDiskCacheDir(Context context, String uniqueName) {
-        // Check if media is mounted or storage is built-in, if so, try and use external cache dir
-        // otherwise use internal cache dir
         final String cachePath =
                 Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) ||
                         !Environment.isExternalStorageRemovable() ? context.getExternalCacheDir().getPath() :
@@ -90,12 +118,22 @@ public class Utils {
         return new File(cachePath + File.separator + uniqueName);
     }
 
+    /**
+     * returns bitmap for appropriate MediaStore image id, using UILoader
+     * @param context used for instantiating UILoader
+     * @param id MediaStore id
+     * @return decoded bitmap
+     */
     public static Bitmap getImageById(Context context, long id) {
         if (imageLoader == null) initImageLoader(context);
         Uri uri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, String.valueOf(id));
         return imageLoader.loadImageSync(uri.toString(), imageSize);
     }
 
+    /**
+     * initiates UILoader
+     * @param c used for creating of loading configuration
+     */
     private static void initImageLoader(Context c) {
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(c));

@@ -17,8 +17,19 @@ import me.gumenniy.geolocator.pojo.TagImage;
  * Created by Arkadiy on 15.01.2016.
  */
 public class SQLiteHelper extends SQLiteOpenHelper {
+    /**
+     * local database name
+     */
     private final static String DB_NAME = "geo_locator_db";
+
+    /**
+     * local database version
+     */
     private static final int DB_VERSION = 3;
+
+    /**
+     * Singleton SQLiteHelper instance
+     */
     private static SQLiteHelper mInstance;
 
     public SQLiteHelper(Context context) {
@@ -51,6 +62,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Writes new record in database
+     * @param imageId MediaStore id of image
+     * @param location attached location
+     */
     public void write(long imageId, Location location) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -63,7 +79,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public List<TagImage> getImages(Context c) {
+    /**
+     * Queries all tag images from database
+     * @return all tag images
+     */
+    public List<TagImage> getImages() {
         SQLiteDatabase db = getReadableDatabase();
         List<TagImage> images = new ArrayList<>();
         Cursor cursor = db.query(LocationTable.NAME,
@@ -91,6 +111,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return images;
     }
 
+    /**
+     * Interface with column names
+     */
     private interface LocationTable {
         String NAME = "location_table";
         String ID = "_id";

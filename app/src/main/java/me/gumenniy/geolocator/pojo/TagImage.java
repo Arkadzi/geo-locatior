@@ -5,13 +5,33 @@ import android.graphics.Bitmap;
 import java.util.Date;
 
 /**
- * Created by Arkadiy on 15.01.2016.
+ * Represents main entity of the project - image with location tags
  */
 public class TagImage {
+
+    /**
+     * MediaStore image id
+     */
     private long id;
+
+    /**
+     * location latitude
+     */
     private double latitude;
+
+    /**
+     * location longitude
+     */
     private double longitude;
+
+    /**
+     * date of applying location to image
+     */
     private Date date;
+
+    /**
+     * decoded thumbnail
+     */
     private Bitmap bitmap;
 
     public TagImage(long id, double latitude, double longitude, long date) {

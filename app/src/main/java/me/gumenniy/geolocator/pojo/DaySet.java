@@ -13,17 +13,35 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Created by Arkadiy on 16.01.2016.
+ * Represents set of tah images for a day
  */
 public class DaySet {
+
+    /**
+     * day images
+     */
     List<TagImage> images;
+
+    /**
+     * date of making images
+     */
     String date;
+
+    /**
+     * walked distance
+     */
     double distance;
 
     public DaySet() {
         images = new ArrayList<>();
     }
 
+
+    /**
+     *  converts list of tag images into list of day sets
+     * @param images which should be separated
+     * @return list of DaySets
+     */
     public static List<DaySet> imagesToSet(List<TagImage> images) {
         List<DaySet> sets = new ArrayList<>();
         Log.e("DaySet", "images size " + images.size());

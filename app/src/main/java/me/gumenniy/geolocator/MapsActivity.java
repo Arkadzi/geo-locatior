@@ -51,17 +51,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        Log.e("MapActivity", "omnMapReady()");
+        Log.d("MapActivity", "omnMapReady()");
         if (getIntent() != null) {
             String date = getIntent().getStringExtra(TotalActivity.DATE);
             if (date != null) {
                 new ImageLoaderTask(date).execute(this);
             }
         }
-        // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
-//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
     class ImageLoaderTask extends AsyncTask<Context, Void, List<TagImage>> {
@@ -75,7 +71,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         protected List<TagImage> doInBackground(Context... params) {
             SQLiteHelper helper = SQLiteHelper.getInstance(params[0]);
 
-            List<TagImage> images = helper.getImages(params[0]);
+            List<TagImage> images = helper.getImages();
             List<TagImage> dayImages = new ArrayList<>();
 
             DateFormat ft = DateFormat.getDateInstance();
@@ -97,6 +93,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    /**
+     * updates points on map
+     * @param tagImages tag images which should be displayed
+     */
     private void updateMap(List<TagImage> tagImages) {
         if (tagImages.size() > 0) {
             LatLngBounds.Builder builder = LatLngBounds.builder();

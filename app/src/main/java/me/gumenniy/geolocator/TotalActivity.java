@@ -21,11 +21,24 @@ import me.gumenniy.geolocator.pojo.DaySet;
 import me.gumenniy.geolocator.pojo.TagImage;
 
 public class TotalActivity extends AppCompatActivity implements MyAdapter.ItemClickListener {
-
+    /**
+     * request code for launching TagActivity
+     */
     private static final int REQUEST_CODE = 1010;
+
+    /**
+     * MapActivity intent key
+     */
     public static final String DATE = "date";
-    private RecyclerView mRecyclerView;
+
+    /**
+     * recycler view adapter
+     */
     private MyAdapter mAdapter;
+
+    /**
+     * date presented in recycler view
+     */
     private List<DaySet> mData;
 
     @Override
@@ -44,7 +57,7 @@ public class TotalActivity extends AppCompatActivity implements MyAdapter.ItemCl
             }
         });
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -64,6 +77,10 @@ public class TotalActivity extends AppCompatActivity implements MyAdapter.ItemCl
         }
     }
 
+    /**
+     * called when user presses on recycler view item
+     * @param position location of item in mData
+     */
     @Override
     public void onClick(int position) {
         Log.e("TotalActivity", "onClick()");
@@ -72,18 +89,24 @@ public class TotalActivity extends AppCompatActivity implements MyAdapter.ItemCl
         startActivity(intent);
     }
 
+    /**
+     * launches asynchronous process for loading DaySets
+     */
     private void updateView() {
         Log.e("TotalActivity", "updateView()");
         new DaySetLoadTask().execute(this);
     }
 
+    /**
+     * task for loading DaySets
+     */
     class DaySetLoadTask extends AsyncTask<Context, Void, List<DaySet>> {
 
         @Override
         protected List<DaySet> doInBackground(Context... params) {
             SQLiteHelper helper = SQLiteHelper.getInstance(params[0]);
 
-            List<TagImage> images = helper.getImages(params[0]);
+            List<TagImage> images = helper.getImages();
             return DaySet.imagesToSet(images);
         }
 
