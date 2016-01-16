@@ -28,25 +28,64 @@ import me.gumenniy.geolocator.loader.UriImageLoader;
 import me.gumenniy.geolocator.loader.UrlImageLoader;
 import me.gumenniy.geolocator.manage.Utils;
 
+/**
+ * activity which applies location to loaded image
+ */
 public class TagActivity extends AppCompatActivity implements LocationListener, AbstractImageLoaderTask.ImageLoaderListener {
+
+    /**
+     * request code for implicit intent for picking image from gallery
+     */
     private static final int REQUEST_CODE = 1010;
+
+    /**
+     * button for defining location
+     */
     private Button locationButton;
 
+    /**
+     * image view with loaded bitmap
+     */
     private ImageView imageView;
+
+    /**
+     * task for loading image. Could be UriImageLoader or UrlImageLoader
+     */
     private AbstractImageLoaderTask imageTask;
 
+    /**
+     * loaded bitmap
+     */
     private Bitmap mBitmap;
+
+    /**
+     * location service
+     */
     private LocationManager locationManager;
 
+    /**
+     * defined location
+     */
     private Location mLocation;
 
+    /**
+     * progress dialog
+     */
     private Dialog mDialog;
+
+    /**
+     * listener which cancels search of location
+     */
     private DialogInterface.OnCancelListener locationCancel = new DialogInterface.OnCancelListener() {
         @Override
         public void onCancel(DialogInterface dialog) {
             cancelLocationSearch();
         }
     };
+
+    /**
+     * listener which cancel image loading
+     */
     private DialogInterface.OnCancelListener imageCancel = new DialogInterface.OnCancelListener() {
         @Override
         public void onCancel(DialogInterface dialog) {
@@ -109,6 +148,9 @@ public class TagActivity extends AppCompatActivity implements LocationListener, 
         Toast.makeText(TagActivity.this, R.string.enable_internet, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * sends implicit intent for picking image from gallery
+     */
     private void sendImageIntent() {
         Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT, null);
         galleryIntent.setType("image/*");
@@ -131,6 +173,10 @@ public class TagActivity extends AppCompatActivity implements LocationListener, 
         }
     }
 
+    /**
+     * called when bitmap was loaded by imageTask
+     * @param bitmap loaded bitmap. could be null if loading was not successful
+     */
     @Override
     public void onLoad(Bitmap bitmap) {
         dismissProgressDialog();
@@ -143,10 +189,16 @@ public class TagActivity extends AppCompatActivity implements LocationListener, 
         }
     }
 
+    /**
+     * updates text on locationButton with defined location
+     */
     private void updateUI() {
         locationButton.setText(mLocation.getLatitude() + " " + mLocation.getLongitude());
     }
 
+    /**
+     * tries to find location of device
+     */
     private void findLocation() {
         Log.e("TagingActivity", "findLocation()");
         if (locationManager == null)
@@ -164,6 +216,10 @@ public class TagActivity extends AppCompatActivity implements LocationListener, 
         }
     }
 
+    /**
+     * checks whether network connectivity is set
+     * @return true if connectivity is set, false otherwise
+     */
     public boolean isConn() {
         ConnectivityManager connectivity = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivity.getActiveNetworkInfo() != null) {
@@ -190,6 +246,9 @@ public class TagActivity extends AppCompatActivity implements LocationListener, 
         }
     }
 
+    /**
+     * tries to cancel image loading task
+     */
     private void cancelImageTask() {
         if (imageTask != null) {
             imageTask.cancel(false);
@@ -197,12 +256,18 @@ public class TagActivity extends AppCompatActivity implements LocationListener, 
         }
     }
 
+    /**
+     * cancels location search
+     */
     private void cancelLocationSearch() {
         if (locationManager != null)
             locationManager.removeUpdates(this);
     }
 
 
+    /**
+     * shows alert dialog which asks user to enable network and gps navigation
+     */
     public void showSettingsAlert() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle(R.string.settings_alert_title);
@@ -224,6 +289,9 @@ public class TagActivity extends AppCompatActivity implements LocationListener, 
         alertDialog.show();
     }
 
+    /**
+     * shows alert dialog with field for entering url for desired image
+     */
     private void showURLAlert() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Enter URL");
@@ -242,6 +310,11 @@ public class TagActivity extends AppCompatActivity implements LocationListener, 
         alertDialog.show();
     }
 
+    /**
+     * launches appropriate ImageLoader instance
+     * @param url could be url or uri
+     * @param task image loader
+     */
     private void launchImageLoader(String url, AbstractImageLoaderTask task) {
         cancelImageTask();
         if (!url.isEmpty()) {
@@ -252,6 +325,10 @@ public class TagActivity extends AppCompatActivity implements LocationListener, 
         }
     }
 
+    /**
+     * shows cancellable progress dialog
+     * @param onCancelListener appropriate cancel listener
+     */
     public void showProgressDialog(DialogInterface.OnCancelListener onCancelListener) {
         ProgressDialog dialog = new ProgressDialog(this);
         dialog.setMessage(getString(R.string.please_wait));
@@ -296,9 +373,18 @@ public class TagActivity extends AppCompatActivity implements LocationListener, 
         }
     }
 
+    /**
+     * Task for applying defined location to loaded image
+     */
     public class CachingTask extends AsyncTask<Context, Void, Boolean> {
-
+        /**
+         * loaded image
+         */
         private final Bitmap bitmap;
+
+        /**
+         * defined location
+         */
         private final Location location;
 
 
