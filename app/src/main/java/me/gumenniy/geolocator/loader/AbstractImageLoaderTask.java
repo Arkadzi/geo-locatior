@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Abstraction of asynchronous image
+ * Abstraction of asynchronous image loading
  */
 public abstract class AbstractImageLoaderTask extends AsyncTask<String, Void, Bitmap> {
     /**
