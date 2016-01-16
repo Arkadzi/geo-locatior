@@ -73,7 +73,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                         LocationTable.LONGITUDE,
                         LocationTable.DATE
                 },
-                null, null, null, null, null);
+                null, null, null, null, LocationTable.DATE);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
