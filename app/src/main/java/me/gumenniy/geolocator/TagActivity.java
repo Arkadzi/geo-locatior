@@ -175,6 +175,7 @@ public class TagActivity extends AppCompatActivity implements LocationListener, 
 
     /**
      * called when bitmap was loaded by imageTask
+     *
      * @param bitmap loaded bitmap. could be null if loading was not successful
      */
     @Override
@@ -203,13 +204,14 @@ public class TagActivity extends AppCompatActivity implements LocationListener, 
         Log.e("TagingActivity", "findLocation()");
         if (locationManager == null)
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (!isConn()) {
+
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, TagActivity.this, null);
+            showProgressDialog(locationCancel);
+        } else if (!isConn()) {
             askUserEnableInternet();
         } else if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, TagActivity.this, null);
-            showProgressDialog(locationCancel);
-        } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, TagActivity.this, null);
             showProgressDialog(locationCancel);
         } else {
             showSettingsAlert();
@@ -218,6 +220,7 @@ public class TagActivity extends AppCompatActivity implements LocationListener, 
 
     /**
      * checks whether network connectivity is set
+     *
      * @return true if connectivity is set, false otherwise
      */
     public boolean isConn() {
@@ -312,7 +315,8 @@ public class TagActivity extends AppCompatActivity implements LocationListener, 
 
     /**
      * launches appropriate ImageLoader instance
-     * @param url could be url or uri
+     *
+     * @param url  could be url or uri
      * @param task image loader
      */
     private void launchImageLoader(String url, AbstractImageLoaderTask task) {
@@ -327,6 +331,7 @@ public class TagActivity extends AppCompatActivity implements LocationListener, 
 
     /**
      * shows cancellable progress dialog
+     *
      * @param onCancelListener appropriate cancel listener
      */
     public void showProgressDialog(DialogInterface.OnCancelListener onCancelListener) {
