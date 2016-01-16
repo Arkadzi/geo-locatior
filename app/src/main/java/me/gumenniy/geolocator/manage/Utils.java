@@ -51,7 +51,7 @@ public class Utils {
         long imageId = getImageIdFromURI(context, uri);
         if (imageId > 0) {
             SQLiteHelper helper = SQLiteHelper.getInstance(context);
-            helper.write(context, imageId, location);
+            helper.write(imageId, location);
             return true;
         } else {
             return false;

@@ -51,7 +51,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void write(Context c, long imageId, Location location) {
+    public void write(long imageId, Location location) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(LocationTable.IMAGE_ID, imageId);
