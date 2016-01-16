@@ -41,6 +41,11 @@ public class TotalActivity extends AppCompatActivity implements MyAdapter.ItemCl
      */
     private List<DaySet> mData;
 
+    /**
+     * empty view with message "No data" if mData is empty
+     */
+    private View mEmptyView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +63,7 @@ public class TotalActivity extends AppCompatActivity implements MyAdapter.ItemCl
         });
 
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        mEmptyView = findViewById(R.id.empty_view);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -113,6 +119,11 @@ public class TotalActivity extends AppCompatActivity implements MyAdapter.ItemCl
         @Override
         protected void onPostExecute(List<DaySet> daySets) {
             mData = daySets;
+            if (!mData.isEmpty()) {
+                mEmptyView.setVisibility(View.INVISIBLE);
+            } else {
+                mEmptyView.setVisibility(View.VISIBLE);
+            }
             Log.e("TotalActivity", "onPostExecute() " + daySets.size());
             mAdapter.setData(mData);
             mAdapter.notifyDataSetChanged();

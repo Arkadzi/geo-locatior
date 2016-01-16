@@ -25,4 +25,5 @@
     <string name="location_not_chosen">Location wasn\'t chosen</string>
     <string name="error_message">Error. Probably, url is wrong</string>
     <string name="enable_internet">Please, Enable internet connection</string>
+    <string name="empty_list">No data</string>
 </resources>
