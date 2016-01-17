@@ -204,14 +204,15 @@ public class TagActivity extends AppCompatActivity implements LocationListener, 
         Log.e("TagingActivity", "findLocation()");
         if (locationManager == null)
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            if (!isConn()) {
+                askUserEnableInternet();
+            } else {
+                locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, TagActivity.this, null);
+                showProgressDialog(locationCancel);
+            }
+        } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, TagActivity.this, null);
-            showProgressDialog(locationCancel);
-        } else if (!isConn()) {
-            askUserEnableInternet();
-        } else if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, TagActivity.this, null);
             showProgressDialog(locationCancel);
         } else {
             showSettingsAlert();
