@@ -67,6 +67,7 @@ public class Utils {
         final String filePath = saveBitmap(context, bitmap);
         ContentValues cv = new ContentValues();
         cv.put(MediaStore.Images.Media.DATA, filePath);
+        cv.put(MediaStore.Images.Media.MIME_TYPE,"image/jpeg");
         Uri uri = context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cv);
         long imageId = getImageIdFromURI(context, uri);
         if (imageId > 0) {
